@@ -3,7 +3,7 @@ Contributors: prasunsen
 Tags: weight loss calculator, weight loss, BMI 
 Requires at least: 2.0.2
 Tested up to: 3.2
-Stable tag: 1.1
+Stable tag: 1.2
 
 This plugin displays functional weight loss planning calculator
 
@@ -33,4 +33,4 @@ Yes, you can put Adsense or any other ads
 
 = Should I link back to the plugin page =
 
-It's not required but a link to http://calendarscripts.info/ovulation-predictor.html will be highly appreciated.
+It's not required but a link to http://calendarscripts.info/weight-loss-calculator.html will be highly appreciated.

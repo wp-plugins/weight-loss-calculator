@@ -1,10 +1,10 @@
 <?php
 /*
 Plugin Name: Weight Loss Calculator
-Plugin URI: http://calendarscripts.info/weight-loss-calculator-wordpress-plugin.html
-Description: This plugin displays functional weight loss/gain planning calculator. It helps calculate the calories intake to reach a sertaing goal.
-Author: Bobby Handzhiev
-Version: 1.1
+Plugin URI: http://calendarscripts.info/weight-loss-calculator.html
+Description: This plugin displays functional weight loss/gain planning calculator. It helps calculate the calories intake to reach certain goal. It is available in many formats: check <a href="http://calendarscripts.info/weight-loss-calculator.html" target="_blank">here</a>.
+Author: CalendarScripts
+Version: 1.2
 Author URI: http://calendarscripts.info
 */ 
 
@@ -64,8 +64,11 @@ function weightloss_options()
 		<form name="form1" method="post" action="<?php echo str_replace( '%7E', '~', $_SERVER['REQUEST_URI']); ?>">
 		<input type="hidden" name="wlc_update" value="Y">
 		
-		<p><?php _e("CSS class definition for the weight loss calculator  &lt;div&gt;:", 'wlc_domain' ); ?> 
-		<textarea name="wlc_table" rows='5' cols='70'><?php echo stripslashes ($wlc_table); ?></textarea>
+		<p><?php _e("<p>You can use this calculator in two ways: as a standard Wordpress widget or by placing it in your post or page. For the latter please include the tag <b>{{weight-loss-calculator}}</b> in the content of your page or post and the calculator will appear there.</p>
+        <p>These options are accessible both from the \"Weight Loss Calculator\" page under your Plugins menu or from your Widgets section.</p>
+        <p>Check out some more of our <a href='http://calendarscripts.info/weight-loss-tools.html' target='_blank'>weight loss tools</a>.</p>
+        <p>CSS class definition for the weight loss calculator wrapper div &lt;div&gt;:</p>", 'wlc_domain' ); ?> 
+		<textarea name="wlc_table" style="height:250px;width:100%;"><?php echo stripslashes ($wlc_table); ?></textarea>
 		</p><hr />
 		
 		<p class="submit">
@@ -77,21 +80,22 @@ function weightloss_options()
 		<?php
 }
 
-// This just echoes the text
-function weightlosscalc($content) 
-{	
-	if(!strstr($content,"{{weight-loss-calculator}}")) return $content;
-	
-	//construct the calculator page	
+function weightloss_generate_calc()
+{
+    //construct the calculator page	
 	$css=get_option('wlc_table');
-	$wl_calc="<style type=\"text/css\">	
-	$css
+	$wl_calc="<style type=\"text/css\">		
+    .wlc_table 
+    {
+        $css
+    }
+    .wlc_table label
+    {
+        float:left;
+        width:100px;
+    }
 	</style>\n\n";
 	
-	if(empty($css))
-	{
-		$inline_style="style='margin:auto;padding:5px;width:450px;text-align:left;'";
-	}
 	
 	if(!empty($_POST['calculator_ok']))
 	{
@@ -134,7 +138,7 @@ function weightlosscalc($content)
 		else $high_risk_calories=false;
 			
 		//the result is here
-		$wl_calc.='<div class="wlc_table" '.$inline_style.'>';		
+		$wl_calc.='<div class="wlc_table">';		
 		
 		if($high_risk_weight)
 		{
@@ -156,26 +160,26 @@ function weightlosscalc($content)
 	{
 		$wl_calc.=<<<WL_CALC
 		<form method="post" onsubmit="return validateCalculator(this);">
-		<table class="wlc_table" $inline_style ="text-align:left;">		
-		<tr><td width="150"><label for="yourAge">Your age:</label></td><td width="300"><input type="text" name="age" id="yourAge" size="6" value="$_SESSION[calc_age]"></td></tr>
-		<tr><td><label for="yourGender">Your gender:</label></td><td><select name="gender">
+		<div class="wlc_table">		
+		    <div><label for="yourAge">Your age:</label> <input type="text" name="age" id="yourAge" size="6" value="$_SESSION[calc_age]"></div>
+		<div><label for="yourGender">Your gender:</label> <select name="gender">
 		<option value="male">Male</option>
 		<option value="female">Female</option>
-		</select></td></tr>
-		<tr><td><label>Your height:</label></td><td> <input type="text" name="height_ft" size="4" onkeyup="calculateHeight(this);"> ft &amp; <input type="text" name="height_in" size="4" onkeyup="calculateHeight(this);"> in <b>OR</b> <input type="text" name="height_cm" size="5" onkeyup="calculateHeight(this);"> cm</td></tr>
-		<tr><td><label>Your weight:</label></td><td><input type="text" name="weight_lb" size="4" onkeyup="calculateWeight(this);"> lbs <b>OR</b> <input type="text" name="weight_kg" size="4" onkeyup="calculateWeight(this);"> kg</td></tr>
-		<tr><td><label for="dailyActivity">Daily activity level:</label></td>
-		<td><select name="activity" id="dailyActivity">
+		</select></div>
+		<div><label>Your height:</label> <nobr><input type="text" name="height_ft" size="4" onkeyup="calculateHeight(this);"> ft &amp; <input type="text" name="height_in" size="4" onkeyup="calculateHeight(this);"> in</nobr> <b>OR</b> <input type="text" name="height_cm" size="5" onkeyup="calculateHeight(this);"> cm</div>
+		<div><label>Your weight:</label> <nobr><input type="text" name="weight_lb" size="4" onkeyup="calculateWeight(this);"> lbs</nobr> <nobr><b>OR</b> <input type="text" name="weight_kg" size="4" onkeyup="calculateWeight(this);"> kg</nobr></div>
+		<div><label for="dailyActivity">Daily activity level:</label> <select name="activity" id="dailyActivity">
 		<option value="0.2">No sport/exercise</option>
 		<option value="0.375">Light activity (sport 1-3 times per week)</option>
 		<option value="0.55">Moderate activity (sport 3-5 times per week)</option>
 		<option value="0.725">High activity (everyday exercise)</option>
 		<option value="0.9">Extreme activity (professional athlete)</option>
-		</select></td></tr>
-		<tr><td><label>How much weight you wish to lose?</label></td><td><input type="text" name="lose_lb" size="4" onkeyup="calculateWeight(this);"> lbs <b>OR</b> 
-		<input type="text" name="lose_kg" size="4" onkeyup="calculateWeight(this);"> kg</td></tr>
-		<tr><td><label for="daysDiet">How much time do you have?</label></td><td> <input type="text" name="days" size="8" id="daysDiet"> days</td></tr>
-		<tr><td style="text-align:center;clear:both;" colspan="2"><input type="submit" value="Calculate!"></td></tr></table>
+		</select></div>
+		<div><label>How much weight you wish to lose?</label> <nobr><input type="text" name="lose_lb" size="4" onkeyup="calculateWeight(this);"> lbs</nobr> <nobr><b>OR</b> 
+		<input type="text" name="lose_kg" size="4" onkeyup="calculateWeight(this);"> kg</nobr></div>
+		<div><label for="daysDiet">How much time do you have?</label>  <nobr><input type="text" name="days" size="8" id="daysDiet"> days</nobr></div>
+		<div style="text-align:center;clear:both;"><input type="submit" value="Calculate!"></div>
+        </div>
 		<input type="hidden" name="calculator_ok" value="1">
 		</form>					
 		
@@ -294,13 +298,41 @@ function weightlosscalc($content)
 		</script>
 WL_CALC;
 	}
+    
+    return $wl_calc;
+}
+
+// This just echoes the text
+function weightlosscalc($content) 
+{	
+	if(!strstr($content,"{{weight-loss-calculator}}")) return $content;
+	
+	$wl_calc=weightloss_generate_calc();
 	
 	$content=str_replace("{{weight-loss-calculator}}",$wl_calc,$content);
 	return $content;
 	
 }
 
+// the widget object
+class WLCalc extends WP_Widget {
+    /** constructor */
+    function WLCalc() {
+        parent::WP_Widget(false, $name = 'Weight Loss Calculator');
+    }
+    
+    function form()
+    {
+        weightloss_options();
+    }
+    
+    function widget($args, $instance) 
+    {
+        echo weightloss_generate_calc();
+    }
+}
+
 add_action('admin_menu','weightloss_add_page');
 add_filter('the_content', 'weightlosscalc');
-
+add_action('widgets_init', create_function('', 'return register_widget("WLCalc");'));
 ?>

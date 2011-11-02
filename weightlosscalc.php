@@ -4,7 +4,7 @@ Plugin Name: Weight Loss Calculator
 Plugin URI: http://calendarscripts.info/weight-loss-calculator.html
 Description: This plugin displays functional weight loss/gain planning calculator. It helps calculate the calories intake to reach certain goal. It is available in many formats: check <a href="http://calendarscripts.info/weight-loss-calculator.html" target="_blank">here</a>.
 Author: CalendarScripts
-Version: 1.2
+Version: 1.3
 Author URI: http://calendarscripts.info
 */ 
 

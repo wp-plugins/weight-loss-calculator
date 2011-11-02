@@ -3,16 +3,13 @@ Contributors: prasunsen
 Tags: weight loss calculator, weight loss, BMI 
 Requires at least: 2.0.2
 Tested up to: 3.2
-Stable tag: 1.2
+Stable tag: 1.3
 
 This plugin displays functional weight loss planning calculator
 
 == Description ==
 
 This plugin displays functional weight loss planning calculator. It can be used from people who want to plan a weight loss program or diet.
-
-View [online weight loss calculator](http://calendarscripts.info/weight-loss-calculator.html "Try the weight loss calculator") demo.
-
 
 == Installation ==
 
